@@ -16,7 +16,7 @@
       loop: "{{ containers }}"
 
     - name: Disable connectivity on the sensor container
-      delegate_to: httod
+      delegate_to: httpd
       vars:
         ansible_user: root
       shell: |
