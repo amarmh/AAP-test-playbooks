@@ -1,13 +1,18 @@
 ---
-- name: Add the sensor container to the inventory and disable connectivity
+- name: Add containers to host inventory and disable connectivity
   hosts: all
-  gather_facts: false
+  vars:
+    ansible_host: 192.168.122.32
+    containers:
+      - sensor
+
   tasks:
-    - name: Add sensor container to host inventory
+    - name: Add containers to host inventory
       add_host:
-        name: sensor
+        name: "{{ item }}"
         ansible_connection: docker
         ansible_docker_extra_args: "-H=tcp://{{ ansible_host }}"
+      loop: "{{ containers }}"
 
     - name: Disable connectivity on the sensor container
       delegate_to: sensor
@@ -21,3 +26,4 @@
         EOF
       register: stdout
       changed_when: false
+
