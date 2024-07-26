@@ -1,0 +1,22 @@
+---
+- name: Add the sensor container to the inventory and disable connectivity
+  hosts: all
+  tasks:
+    - name: Add sensor container to host inventory
+      add_host:
+        name: sensor
+        ansible_connection: docker
+        ansible_docker_extra_args: "-H=tcp://{{ ansible_host }}"
+
+    - name: Disable connectivity on the sensor container
+      delegate_to: sensor
+      vars:
+        ansible_user: root
+      shell: |
+        bv-cfg <<EOF
+        set system.management.data.updates.portal.updates_url ''
+        stage
+        deploy
+        EOF
+      register: stdout
+      changed_when: false
