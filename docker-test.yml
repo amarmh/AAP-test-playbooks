@@ -5,7 +5,7 @@
   vars:
     ansible_host: 192.168.122.1
     containers:
-      - argoproj/sensor
+      - httpd
 
   tasks:
     - name: Add containers to host inventory
@@ -16,7 +16,7 @@
       loop: "{{ containers }}"
 
     - name: Disable connectivity on the sensor container
-      delegate_to: argoproj/sensor
+      delegate_to: httod
       vars:
         ansible_user: root
       shell: |
@@ -24,6 +24,7 @@
         set system.management.data.updates.portal.updates_url ''
         stage
         deploy
+        whoami
         EOF
       register: stdout
       changed_when: false
