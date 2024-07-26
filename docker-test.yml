@@ -1,6 +1,7 @@
 ---
 - name: Add the sensor container to the inventory and disable connectivity
   hosts: all
+  gather_facts: false
   tasks:
     - name: Add sensor container to host inventory
       add_host:
