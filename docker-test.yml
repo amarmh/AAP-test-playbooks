@@ -1,6 +1,7 @@
 ---
 - name: Add containers to host inventory and disable connectivity
   hosts: all
+  gather_facts: false
   vars:
     ansible_host: 192.168.122.32
     containers:
