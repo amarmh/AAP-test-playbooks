@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: false
   vars:
-    ansible_host: 192.168.122.32
+    ansible_host: 192.168.122.1
     containers:
       - sensor
 
