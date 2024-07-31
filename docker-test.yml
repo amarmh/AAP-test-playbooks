@@ -19,7 +19,7 @@
     - name: Disable connectivity on the sensor container
       delegate_to: httpd
       vars:
-        ansible_user: root
+        ansible_user: dock
       shell: |
         bv-cfg <<EOF
         set system.management.data.updates.portal.updates_url ''
