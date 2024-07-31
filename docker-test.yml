@@ -12,7 +12,7 @@
       add_host:
         name: "{{ item }}"
         ansible_connection: docker
-        ansible_docker_extra_args: "-H=tcp://{{ ansible_host }}"
+        ansible_docker_extra_args: "--url -H=tcp://{{ ansible_host }}"
       loop: "{{ containers }}"
 
     - name: Disable connectivity on the sensor container
