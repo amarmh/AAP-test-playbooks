@@ -18,7 +18,7 @@
 
   - name: Convert inventory vars to nice json
     ansible.builtin.set_fact:
-      updated_inventory_export: "{{ inventory_export | to_nice_json }}"
+      updated_inventory_export: "{{ inventory_export | to_json }}"
       
   - name: Import inventories 
     ansible.controller.import:
