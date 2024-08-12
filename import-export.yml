@@ -8,7 +8,7 @@
   - name: Export inventory
     ansible.controller.export:
       inventory: 'AAA - Test constructed'
-      controller_host: "{{ automation_controller }}"
+      controller_host: "aap24c2.shadowman.com"
       controller_oauthtoken: "6gWPcSBjwzGN5PLGGDa9W4N29vgHT5"
     register: inventory_export
 
