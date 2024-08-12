@@ -19,6 +19,8 @@
 #  - name: Convert inventory vars to nice json
 #    ansible.builtin.set_fact:
 #      updated_inventory_export: "{{ inventory_export | to_json }}"
+  - name: sleep for a bit
+    shell: sleep 120
       
   - name: Import inventories 
     ansible.controller.import:
