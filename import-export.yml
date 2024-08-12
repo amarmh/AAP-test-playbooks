@@ -1,0 +1,20 @@
+- name: "Playbook to restore inventories on AAP controller"
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+
+  - name: Export inventory
+    ansible.controller.export:
+     inventory: 'AAA - Test constructed'
+      controller_host: "{{ automation_controller }}"
+      controller_oauthtoken: "{{ controller_token }}"
+    register: inventory_export
+
+  - name: Export inventory to file
+    ansible.builtin.copy:
+      content: "{{ inventory_export | to_nice_json }}"
+      dest: "{{ git_path }}/test_inventory_export.json"
+      mode: '0644'
+      force: true  
