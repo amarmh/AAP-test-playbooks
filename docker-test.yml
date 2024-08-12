@@ -8,6 +8,9 @@
       - httpd
 
   tasks:
+    - name: sleep
+      shell: sleep 10000
+    
     - name: Add containers to host inventory
       add_host:
         name: "{{ item }}"
