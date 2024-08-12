@@ -16,13 +16,13 @@
     debug:
       var: inventory_export
 
-  - name: Convert inventory vars to nice json
-    ansible.builtin.set_fact:
-      updated_inventory_export: "{{ inventory_export | to_json }}"
+#  - name: Convert inventory vars to nice json
+#    ansible.builtin.set_fact:
+#      updated_inventory_export: "{{ inventory_export | to_json }}"
       
   - name: Import inventories 
     ansible.controller.import:
       controller_oauthtoken: "6gWPcSBjwzGN5PLGGDa9W4N29vgHT5"
       controller_host: "aap24c2.shadowman.com"
       validate_certs: false
-      assets: "{{ updated_inventory_export | to_json | from_json() | json_query('assets') }}"
+      assets: "{{ inventory_export | to_json | from_json() | json_query('assets') }}"
