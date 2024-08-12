@@ -1,0 +1,5 @@
+- name: sleep test
+  hosts: all
+  tasks:
+    - name: sleep 
+      shell: sleep 10000
