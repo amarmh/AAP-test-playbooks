@@ -8,7 +8,7 @@
   - name: Export inventory
     ansible.controller.export:
       inventory: 'C1'
-      controller_host: "aap24c2.shadowman.com"
+      controller_host: "system1"
       controller_oauthtoken: "0000000000000000000000000000"
     register: inventory_export
 
@@ -25,6 +25,6 @@
   - name: Import inventories 
     ansible.controller.import:
       controller_oauthtoken: "00000000000000000000000"
-      controller_host: "aap24c2.shadowman.com"
+      controller_host: "system1"
       validate_certs: false
       assets: "{{ inventory_export }}"
