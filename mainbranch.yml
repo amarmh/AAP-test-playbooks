@@ -1,0 +1,5 @@
+- name: branch test
+  hosts: all
+  tasks:
+    - name: main
+      shell: this is main branch
