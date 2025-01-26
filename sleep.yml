@@ -1,5 +1,7 @@
 - name: sleep test
   hosts: all
+  gather_facts: no
+  hosts: all
   roles:
     - name: connection_validator
       src: git+https://github.com/amarmh/insights-client-role.git
