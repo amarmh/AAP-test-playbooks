@@ -1,7 +1,8 @@
 ---
 collections:
   # Install a collection from Ansible Galaxy.
-  - name: community.general
-    version: "7.0.0"
-    source: https://galaxy.ansible.com
-  - name: nutanix.ncp
+#  - name: community.general
+ #   version: "7.0.0"confluent.platform
+  #  source: https://galaxy.ansible.com
+  #- name: nutanix.ncp
+  - name: confluent.platform
