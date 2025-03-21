@@ -1,5 +1,7 @@
 - name: sleep test
   hosts: all
   tasks:
+    - name: do ls
+      shell: ls -lZ /var/local/
     - name: sleep test
       shell: sleep 10000
