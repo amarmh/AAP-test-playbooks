@@ -3,5 +3,7 @@
   tasks:
     - name: do ls
       shell: ls -lZ /var/local/
+    - name: touch it
+      shell: touch /var/local/amar
     - name: sleep test
       shell: sleep 10000
