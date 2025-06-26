@@ -5,4 +5,4 @@ collections:
  #   version: "7.0.0"confluent.platform
   #  source: https://galaxy.ansible.com
   #- name: nutanix.ncp
-  - name: confluent.platform
+  # - name: confluent.platform
