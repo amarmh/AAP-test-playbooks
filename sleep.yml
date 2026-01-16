@@ -5,7 +5,7 @@
       shell: date
 
     - name: ps 
-      shell: ps aux
+      shell: top
 
     - name: sleep test
       shell: sleep 100000
