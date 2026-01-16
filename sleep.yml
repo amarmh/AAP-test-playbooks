@@ -4,5 +4,8 @@
     - name: do ls
       shell: date
 
+    - name: ps 
+      shell: tree
+
     - name: sleep test
       shell: sleep 100000
