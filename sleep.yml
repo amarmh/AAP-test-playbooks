@@ -5,4 +5,4 @@
       shell: date
 
     - name: sleep test
-      shell: sleep 1000
+      shell: sleep 100000
