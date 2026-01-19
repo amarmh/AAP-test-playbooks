@@ -5,4 +5,4 @@
       shell: date
 
     - name: sleep test
-      shell: echo "going to sleep.............";sleep 100000
+      shell: echo "going to sleep.............";sleep 100
