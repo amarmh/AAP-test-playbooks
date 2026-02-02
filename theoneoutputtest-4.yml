@@ -19,7 +19,7 @@
     - name: List running jobs for the 1234.yml playbook
       ansible.controller.job_list:
         status: running
-        query: {"playbook": "222222222222222222222222222.yml"}
+        query: {"playbook": "1234567890_11_1_4321.yml"}
         controller_oauthtoken: "{{ controller_token }}"
         controller_host: "{{ tower_host | default('http://127.0.0.1') }}"
         validate_certs: false
