@@ -17,6 +17,8 @@
         scm_update_on_launch: true
         scm_clean: true
         state: present
-        controller_oauthtoken: "uOSoLX#9D9Sl3qCs"
-        controller_host: "{{ tower_host | default('http://localhost') }}"
+        aap_username: "sdfsdfsdfsdfsdfdsfsdfsdfsdf"
+        aap_password: "7E@7!ZM8stb09E$6"
+        aap_hostname: "{{ tower_host | default('http://127.0.0.1') }}"
+        validate_certs: false
         validate_certs: false 
