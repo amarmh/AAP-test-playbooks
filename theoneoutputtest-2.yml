@@ -9,10 +9,10 @@
       description: 'Temporary token for subsequent tasks'
       scope: "write"
       state: present
-      controller_username: "{{ API_USERNAME }}"
-      controller_password: "{{ API_PASSWORD }}"
-      controller_host: "{{ tower_host | default('https://10.0.79.82/') }}"
-      validate_certs: false
+        aap_username: "{{ api_username }}"
+        aap_password: "{{ api_password }}"
+        aap_hostname: "{{ tower_host | default('http://127.0.0.1') }}"
+        validate_certs: false
 
   - name: List running jobs for the test_playbook.yml playbook
     ansible.controller.job_list:
