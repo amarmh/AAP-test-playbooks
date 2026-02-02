@@ -1,5 +1,4 @@
 ---
-
 - name: Testing playbook for create token
   hosts: all
   gather_facts: false
@@ -7,7 +6,7 @@
     - name: Create project using token
       ansible.controller.project:
         name: project 1
-        description: 1st project
+        description: 1 st project 1234
         organization: Default
         scm_type: git
         scm_url: https://github.com/example/AAP.git
