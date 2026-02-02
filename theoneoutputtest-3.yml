@@ -17,6 +17,6 @@
         scm_update_on_launch: true
         scm_clean: true
         state: present
-        controller_oauthtoken: "{{ controller_token }}"
+        controller_oauthtoken: "uOSoLX#9D9Sl3qCs"
         controller_host: "{{ tower_host | default('http://localhost') }}"
         validate_certs: false 
