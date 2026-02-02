@@ -4,8 +4,6 @@
   hosts: all
   gather_facts: false
   tasks:
-
-
     - name: Create project using token
       ansible.controller.project:
         name: project 1
@@ -17,7 +15,7 @@
         scm_update_on_launch: true
         scm_clean: true
         state: present
-        aap_username: "{{ api_username }}"
-        aap_password: "{{ api_password }}"
-        aap_hostname: "{{ tower_host | default('http://127.0.0.1') }}"
+        controller_username: "{{ api_username }}"
+        controller_password: "{{ api_password }}"
+        controller_host: "{{ tower_host | default('http://127.0.0.1') }}"
         validate_certs: false
