@@ -14,7 +14,7 @@
         controller_password: "{{ api_password }}"
         controller_host: "{{ tower_host | default('http://127.0.0.1') }}"
         validate_certs: false
-      no_logs: false
+      no_log: false
 
     - name: List running jobs for the 1234.yml playbook
       ansible.controller.job_list:
@@ -23,7 +23,7 @@
         controller_oauthtoken: "{{ controller_token }}"
         controller_host: "{{ tower_host | default('http://127.0.0.1') }}"
         validate_certs: false
-      no_logs: false
+      no_log: false
       register: testing_jobs
 
     - name: Call Automation Controller API
@@ -42,7 +42,7 @@
             #aap_token: "{{ ansible_facts['aap_token']['token'] }}"
             controller_host: "{{ tower_host | default('http://127.0.0.1') }}"
             validate_certs: false
-          no_logs: false
+          no_log: false
 
         - name: Debug token
           ansible.builtin.debug:
