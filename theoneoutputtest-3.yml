@@ -1,0 +1,22 @@
+---
+
+- name: Testing playbook for create token
+  hosts: all
+  gather_facts: false
+  tasks:
+
+
+    - name: Create project using token
+      ansible.controller.project:
+        name: project 1
+        description: 1st project
+        organization: Default
+        scm_type: git
+        scm_url: https://github.com/example/AAP.git
+        scm_branch: main
+        scm_update_on_launch: true
+        scm_clean: true
+        state: present
+        controller_oauthtoken: "{{ controller_token }}"
+        controller_host: "{{ tower_host | default('http://localhost') }}"
+        validate_certs: false 
