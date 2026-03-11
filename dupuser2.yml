@@ -31,7 +31,7 @@
       loop_control:
         label: "{{ item.1.username }}"
 
-    - name: Collect Unique Role IDs to fetch
+    - name: Collect Unique Role IDs
       ansible.builtin.set_fact:
         unique_role_ids: >-
           {% set role_ids = [] %}
@@ -54,7 +54,7 @@
 
     - name: Build User Permission Report
       ansible.builtin.set_fact:
-        user_report: "{{ user_report | default([]) + [ {'user': item.username, 'email': item.email, 'all_permissions': final_perms | unique} ] }}"
+        user_report: "{{ user_report | default([]) + [ {'user': item.username, 'email': item.email, 'all_permissions': final_perms | from_yaml | unique} ] }}"
       vars:
         assignments: "{{ query('ansible.platform.gateway_api', 'role_user_assignments', query_params={'user_id': item.id}, host=aap_hostname, username=aap_username, password=aap_password, verify_ssl=aap_validate_certs) }}"
         final_perms: >-
@@ -68,6 +68,13 @@
       loop_control:
         label: "Compiling report for {{ item.username }}"
 
-    - name: Final Results
+    - name: Display Pretty Summary
       ansible.builtin.debug:
-        var: user_report
+        msg: 
+          - "------------------------------------------------"
+          - "USER: {{ item.user }} ({{ item.email }})"
+          - "PERMISSIONS: {{ item.all_permissions | join(', ') }}"
+          - "------------------------------------------------"
+      loop: "{{ user_report | default([]) }}"
+      loop_control:
+        label: "{{ item.user }}"
