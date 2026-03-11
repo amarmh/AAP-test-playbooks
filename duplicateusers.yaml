@@ -1,7 +1,6 @@
 ---
-#
-# Usage: ansible-playbook find_duplicate_users.yml -e "output_format=csv|json"
-#
+# Usage: ansible-playbook find_duplicate_users.yml -e "output_format=csv"
+# Supported formats: csv, json
 
 - name: Find gateway users with duplicate emails in 2.6
   hosts: localhost
@@ -13,10 +12,9 @@
     aap_username: "{{ lookup('env', 'CONTROLLER_USERNAME') }}"
     aap_password: "{{ lookup('env', 'CONTROLLER_PASSWORD') }}"
     aap_validate_certs: true
-    output_format: "{{ output_format }}"
+    output_format: "json"  # Defaulting to json if not provided
 
   tasks:
-
     - name: Load users and authenticators through the API
       ansible.builtin.set_fact:
         users: >-
@@ -36,7 +34,7 @@
 
     - name: Build username to ID mapping
       ansible.builtin.set_fact:
-        user_id_map: "{{ user_id_map | default({}) | combine({item.username: item.id}) }}"
+        user_id_map: "{{ (user_id_map | default({})) | combine({item.username: item.id}) }}"
       loop: "{{ users }}"
       loop_control:
         label: "{{ item.username }}"
@@ -73,7 +71,7 @@
       loop: "{{ users }}"
       loop_control:
         label: "{{ item.username }}"
-      when: item.email is defined
+      when: item.email is defined and item.email | length > 0
 
     - name: Collate emails with multiple users
       ansible.builtin.set_fact:
@@ -91,7 +89,7 @@
               'email': email_item.0.key,
               'username': email_item.1.username,
               'user_id': email_item.1.id,
-              'associated_authenticators': auth_by_username[email_item.1.username].associated_authenticators | default({})
+              'associated_authenticators': (auth_by_username[email_item.1.username].associated_authenticators | default({}))
             }]
           }}
       loop: "{{ users_by_email | dict2items | subelements('value') }}"
@@ -118,25 +116,24 @@
               )
             })
           }}
-      loop: "{{ dupe_user_list }}"
+      loop: "{{ dupe_user_list | default([]) }}"
       loop_control:
         label: "{{ item.username }}"
 
     - name: Extract role names
       ansible.builtin.set_fact:
-       user_role_summary: >-
-        {{
-          user_role_summary | default({}) | combine({
-            item.key: (
-              item.value
-              | selectattr('role_definition', 'defined')
-              | map(attribute='role_definition.name')
-              | list
-            )
-          })
-        }}
-
-      loop: "{{ user_roles | dict2items }}"
+        user_role_summary: >-
+          {{
+            user_role_summary | default({}) | combine({
+              item.key: (
+                item.value
+                | selectattr('role_definition', 'defined')
+                | map(attribute='role_definition.name')
+                | list
+              )
+            })
+          }}
+      loop: "{{ user_roles | default({}) | dict2items }}"
       loop_control:
         label: "{{ item.key }}"
 
@@ -162,7 +159,7 @@
             table_rows | default([]) + [{
               'email': item.email,
               'username': item.username,
-              'authenticator': authenticators_by_id[item.key | int] | default('Unknown (ID: ' + item.key + ')'),
+              'authenticator': authenticators_by_id[item.key | int] | default('Unknown (ID: ' + item.key | string + ')'),
               'authenticator_uid': item.value.uid,
               'roles': (user_role_summary[item.username] | default([])) | join(';')
             }]
