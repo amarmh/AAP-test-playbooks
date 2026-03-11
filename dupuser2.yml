@@ -31,22 +31,26 @@
       loop_control:
         label: "{{ item.1.username }}"
 
+    - name: Collect Unique Role IDs to fetch
+      ansible.builtin.set_fact:
+        unique_role_ids: >-
+          {% set role_ids = [] %}
+          {% for u in dupe_users | default([]) %}
+            {% set assignments = query('ansible.platform.gateway_api', 'role_user_assignments', query_params={'user_id': u.id}, host=aap_hostname, username=aap_username, password=aap_password, verify_ssl=aap_validate_certs) %}
+            {% for a in assignments %}
+              {% set r_id = a.role_definition.id if a.role_definition is mapping else a.role_definition %}
+              {% if r_id not in role_ids %}{% set _ = role_ids.append(r_id) %}{% endif %}
+            {% endfor %}
+          {% endfor %}
+          {{ role_ids }}
+
     - name: Fetch and Map Role Permissions
       ansible.builtin.set_fact:
-        role_cache: "{{ role_cache | default({}) | combine({ item: query('ansible.platform.gateway_api', 'role_definitions/' + item | string, host=aap_hostname, username=aap_username, password=aap_password, verify_ssl=aap_validate_certs)[0].permissions }) }}"
-      # This loop looks at every user assignment to find unique role IDs to fetch
-      loop: >-
-        {% set role_ids = [] %}
-        {% for u in dupe_users | default([]) %}
-          {% set assignments = query('ansible.platform.gateway_api', 'role_user_assignments', query_params={'user_id': u.id}, host=aap_hostname, username=aap_username, password=aap_password, verify_ssl=aap_validate_certs) %}
-          {% for a in assignments %}
-            {% set r_id = a.role_definition.id if a.role_definition is mapping else a.role_definition %}
-            {% if r_id not in role_ids %}{% set _ = role_ids.append(r_id) %}{% endif %}
-          {% endfor %}
-        {% endfor %}
-        {{ role_ids }}
+        role_cache: "{{ role_cache | default({}) | combine({ item | string: query('ansible.platform.gateway_api', 'role_definitions/' + item | string, host=aap_hostname, username=aap_username, password=aap_password, verify_ssl=aap_validate_certs)[0].permissions }) }}"
+      loop: "{{ unique_role_ids | from_yaml }}"
       loop_control:
         label: "Caching Permissions for Role ID: {{ item }}"
+      when: unique_role_ids is defined and unique_role_ids != "[]"
 
     - name: Build User Permission Report
       ansible.builtin.set_fact:
