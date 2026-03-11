@@ -124,12 +124,18 @@
 
     - name: Extract role names
       ansible.builtin.set_fact:
-        user_role_summary: >-
-          {{
-            user_role_summary | default({}) | combine({
-              item.key: item.value | map(attribute='role_definition.name') | list
-            })
-          }}
+      user_role_summary: >-
+        {{
+          user_role_summary | default({}) | combine({
+            item.key: (
+              item.value
+              | selectattr('role_definition', 'defined')
+              | map(attribute='role_definition.name')
+              | list
+            )
+          })
+        }}
+
       loop: "{{ user_roles | dict2items }}"
       loop_control:
         label: "{{ item.key }}"
