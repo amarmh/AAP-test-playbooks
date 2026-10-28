@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Stay running so this node can be canceled
+      ansible.builtin.command: sleep 180
+      changed_when: false
